@@ -8,6 +8,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 
+import foodapp.dto.OrderDataJpa;
 import foodapp.dto.ProductResponse;
 import foodapp.model.Order;
 
@@ -17,11 +18,13 @@ public class PaymentServiceImplementation implements PaymentService {
 	@Value("${stripe.secretKey}")
 	private String secretKey;
 	private ProductResponse productResponse;
-	
-	public PaymentServiceImplementation(ProductResponse productResponse) {
+	private OrderDataJpa orderDataJpa;
+	public PaymentServiceImplementation(ProductResponse productResponse,OrderDataJpa orderDataJpa) {
 		this.productResponse = productResponse;
+		this.orderDataJpa = orderDataJpa;
 	}
 
+	
 	@Override
 	public ProductResponse createPaymentLink(Order order) {
 		Stripe.apiKey = secretKey;
@@ -65,6 +68,12 @@ public class PaymentServiceImplementation implements PaymentService {
 		
 		
 		return productResponse;
+	}
+
+	@Override
+	public void addOrderJpa(Order order) {
+		
+		orderDataJpa.save(order);
 	}
 
 }

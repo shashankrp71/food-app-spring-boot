@@ -8,4 +8,5 @@ import foodapp.model.Order;
 @Service
 public interface PaymentService {
 	public ProductResponse createPaymentLink(Order order);
+	public void addOrderJpa(Order order);
 }
